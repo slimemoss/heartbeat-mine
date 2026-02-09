@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ChartFace, Interval } from './face';
-import { Button } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 
 function getIntervalsWithFlags(dates: Date[], begin: Date, end: Date): Interval[] {
   const intervalMs = 10 * 60 * 1000; // 10分ごと
@@ -30,29 +30,31 @@ export const Chart = (props: { dates: Date[] }) => {
 
   const intervals = getIntervalsWithFlags(filteredDates, start, end)
 
-return (
-  <div style={{ display: "flex", flexDirection: "column", height: "100vh", padding: "8px", boxSizing: "border-box" }}>
-    <div style={{ marginBottom: "8px", display: "flex", gap: "8px" }}>
-      <Button
-        size="sm"
-        variant="secondary"
-        onClick={() => setEndDate(prev => prev + 2)}
-        disabled={endDate >= maxEndDate}
-      >
-        ２日前
-      </Button>
-      <Button
-        size="sm"
-        variant="secondary"
-        onClick={() => setEndDate(prev => Math.max(prev - 2, 0))}
-        disabled={endDate <= 0}
-      >
-        ２日後
-      </Button>
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh", padding: "8px", boxSizing: "border-box" }}>
+      <Alert variant="light">赤線: 現在時刻</Alert>
+      <Alert variant="light">青線: 上がON、下がOFF</Alert>
+      <div style={{ marginBottom: "8px", display: "flex", gap: "8px" }}>
+	<Button
+          size="sm"
+          variant="secondary"
+          onClick={() => setEndDate(prev => prev + 2)}
+          disabled={endDate >= maxEndDate}
+	>
+          ２日前
+	</Button>
+	<Button
+          size="sm"
+          variant="secondary"
+          onClick={() => setEndDate(prev => Math.max(prev - 2, 0))}
+          disabled={endDate <= 0}
+	>
+          ２日後
+	</Button>
+      </div>
+      <div style={{ flex: 1, overflow: "hidden" }}>
+	<ChartFace intervals={intervals} />
+      </div>
     </div>
-    <div style={{ flex: 1, overflow: "hidden" }}>
-      <ChartFace intervals={intervals} />
-    </div>
-  </div>
-)
+  )
 }

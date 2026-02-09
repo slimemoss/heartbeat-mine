@@ -62,10 +62,17 @@ export const ChartFace = (props: { intervals: Interval[] }) => {
         grid: { color: "#444444" },
       },
       y: {
-        min: 0,
-        max: 1,
-        ticks: { stepSize: 1, color: "#FFFFFF" },
-        grid: { color: "#444444" },
+	min: 0,
+	max: 1,
+	ticks: {
+	  stepSize: 1,
+	  color: "#FFFFFF",
+	  callback: function (tickValue: string | number) {
+	    const v = Number(tickValue)
+	    return v === 0 ? "off" : "on"
+	  }
+	},
+	grid: { color: "#444444" }
       },
     },
     plugins: {
