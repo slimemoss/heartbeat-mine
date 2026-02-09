@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - heartbeat-mine-data:/data
+    ports:
+      - "9000:8080"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "9001:80"
+    restart: unless-stopped
+
+volumes:
+  heartbeat-mine-data:
