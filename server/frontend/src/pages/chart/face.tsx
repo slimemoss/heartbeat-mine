@@ -28,17 +28,17 @@ ChartJS.register(
   Title
 );
 
-export const ChartFace  = (props: {intervals: Interval[]}) => {
+export const ChartFace = (props: { intervals: Interval[] }) => {
   const { intervals } = props
 
   const data = {
-    labels: intervals.map((i) => i.start),
+    labels: intervals.map(i => i.start),
     datasets: [
       {
-	data: intervals.map((i) => (i.hasDate ? 1 : 0)),
-	borderColor: "cyan",
-	backgroundColor: "rgba(0, 255, 255, 0.3)",
-	tension: 0.1,
+        data: intervals.map(i => (i.hasDate ? 1 : 0)),
+        borderColor: "cyan",
+        backgroundColor: "rgba(0, 255, 255, 0.3)",
+        tension: 0.1,
       },
     ],
   }
@@ -46,37 +46,34 @@ export const ChartFace  = (props: {intervals: Interval[]}) => {
   const options = {
     scales: {
       x: {
-	type: "time" as const,
-	time: {
-	  unit: "hour" as const,
-	  tooltipFormat: "yyyy-MM-dd HH:mm"
-	},
-	ticks: {
-	  color: "#FFFFFF",
-	  callback: function(value: any) {
-	    const date = new Date(value);
-	    const hour = date.getHours();
-            return `${date.getMonth() + 1}/${date.getDate()} ${hour}:00`;
-	  }
-	},
-	grid: { color: "#444444" }
+        type: "time" as const,
+        time: {
+          unit: "hour" as const,
+          tooltipFormat: "yyyy-MM-dd HH:mm",
+        },
+        ticks: {
+          color: "#FFFFFF",
+          callback: function (value: any) {
+            const date = new Date(value)
+            const hour = date.getHours()
+            return `${date.getMonth() + 1}/${date.getDate()} ${hour}:00`
+          },
+        },
+        grid: { color: "#444444" },
       },
       y: {
-	min: 0,
-	max: 1,
-	ticks: {
-          stepSize: 1,
-          color: "#FFFFFF"
-        },
-        grid: { color: "#444444" }
-      }
+        min: 0,
+        max: 1,
+        ticks: { stepSize: 1, color: "#FFFFFF" },
+        grid: { color: "#444444" },
+      },
     },
     plugins: {
       title: {
         display: true,
         text: "PC電源ON/OFF",
         color: "#FFFFFF",
-        font: { size: 16 }
+        font: { size: 16 },
       },
       legend: { display: false },
       tooltip: {
@@ -84,12 +81,32 @@ export const ChartFace  = (props: {intervals: Interval[]}) => {
         bodyColor: "#FFFFFF",
         backgroundColor: "#222222",
         borderColor: "#444444",
-        borderWidth: 1
-      }
-    }
+        borderWidth: 1,
+      },
+    },
   }
 
-  return (
-    <Line data={data} options={options} />
-  )
+  // 赤い縦線を描画するプラグイン
+  const plugins = [
+    {
+      id: "currentTimeLine",
+      afterDraw: (chart: any) => {
+        const ctx = chart.ctx
+        const xScale = chart.scales.x
+        const now = new Date()
+        const x = xScale.getPixelForValue(now)
+
+        ctx.save()
+        ctx.beginPath()
+        ctx.moveTo(x, chart.chartArea.top)
+        ctx.lineTo(x, chart.chartArea.bottom)
+        ctx.lineWidth = 2
+        ctx.strokeStyle = "red"
+        ctx.stroke()
+        ctx.restore()
+      },
+    },
+  ]
+
+  return <Line data={data} options={options} plugins={plugins} />
 }
