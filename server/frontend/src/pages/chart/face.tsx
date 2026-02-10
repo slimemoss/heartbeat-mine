@@ -31,14 +31,19 @@ ChartJS.register(
 export const ChartFace = (props: { intervals: Interval[] }) => {
   const { intervals } = props
 
+  const now = new Date()
+
   const data = {
     labels: intervals.map(i => i.start),
     datasets: [
       {
-        data: intervals.map(i => (i.hasDate ? 1 : 0)),
-        borderColor: "cyan",
-        backgroundColor: "rgba(0, 255, 255, 0.3)",
-        tension: 0.1,
+	data: intervals.map(i =>
+          i.start > now ? null : (i.hasDate ? 1 : 0)
+	),
+	borderColor: "cyan",
+	backgroundColor: "rgba(0, 255, 255, 0.3)",
+	tension: 0.1,
+	spanGaps: false, // 重要: null で線を切る
       },
     ],
   }
