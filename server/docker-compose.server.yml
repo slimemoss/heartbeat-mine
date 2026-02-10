@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  backend:
+    image: ghcr.io/slimemoss/heartbeat-mine-backend:latest
+    volumes:
+      - heartbeat-mine-data:/data
+    ports:
+      - "9000:8080"
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/slimemoss/heartbeat-mine-frontend:latest
+    depends_on:
+      - backend
+    ports:
+      - "9001:80"
+    restart: unless-stopped
+
+volumes:
+  heartbeat-mine-data:
