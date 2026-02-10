@@ -31,7 +31,8 @@ ChartJS.register(
 export const ChartFace = (props: { intervals: Interval[] }) => {
   const { intervals } = props
 
-  const now = new Date()
+  // 未来(現在の20分前以降)は、表示しない。リアルタイムより見やすさ
+  const now = new Date(Date.now() - 20 * 60 * 1000)
 
   const data = {
     labels: intervals.map(i => i.start),
