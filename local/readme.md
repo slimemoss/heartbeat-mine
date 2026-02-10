@@ -8,6 +8,7 @@ set -Ux HEARTBEAT_MINE_SERVER https://example.com
 cp ./heartbeat-mine.service ~/.config/systemd/user/
 systemctl --user daemon-reload
 systemctl --user restart heartbeat-mine.service
+systemctl --user enable --now heartbeat-mine.service
 systemctl --user status heartbeat-mine.service
 ```
 

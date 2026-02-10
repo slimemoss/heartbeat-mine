@@ -5,3 +5,6 @@ Description=Periodic curl to server
 Type=simple
 Environment=HEARTBEAT_MINE_SERVER=localhost:9000
 ExecStart=/bin/sh -c 'while true; do curl -fsS "http://$HEARTBEAT_MINE_SERVER/ping"; sleep 300; done'
+
+[Install]
+WantedBy=default.target
