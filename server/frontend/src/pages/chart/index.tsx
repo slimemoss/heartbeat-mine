@@ -21,13 +21,13 @@ export const Chart = (props: { dates: Date[] }) => {
   const { dates } = props
   const [endDate, setEndDate] = React.useState(0)
 
-  const maxEndDate = 8
+  const maxEndDate = 24
+  const step_days = 4
 
   const now = new Date()
   const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() - endDate + 1)
-  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - endDate - 1)
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - endDate - step_days + 1)
   const filteredDates = dates.filter(d => d >= start && d < end)
-
   const intervals = getIntervalsWithFlags(filteredDates, start, end)
 
   return (
@@ -38,18 +38,18 @@ export const Chart = (props: { dates: Date[] }) => {
 	<Button
           size="sm"
           variant="secondary"
-          onClick={() => setEndDate(prev => prev + 2)}
+          onClick={() => setEndDate(prev => prev + step_days)}
           disabled={endDate >= maxEndDate}
 	>
-          ２日前
+          {step_days}日前
 	</Button>
 	<Button
           size="sm"
           variant="secondary"
-          onClick={() => setEndDate(prev => Math.max(prev - 2, 0))}
+          onClick={() => setEndDate(prev => Math.max(prev - step_days, 0))}
           disabled={endDate <= 0}
 	>
-          ２日後
+          {step_days}日後
 	</Button>
       </div>
       <div style={{ flex: 1, overflow: "hidden" }}>

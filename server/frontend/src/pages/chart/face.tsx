@@ -57,14 +57,16 @@ export const ChartFace = (props: { intervals: Interval[] }) => {
           unit: "hour" as const,
           tooltipFormat: "yyyy-MM-dd HH:mm",
         },
-        ticks: {
-          color: "#FFFFFF",
-          callback: function (value: any) {
-            const date = new Date(value)
-            const hour = date.getHours()
-            return `${date.getMonth() + 1}/${date.getDate()} ${hour}:00`
-          },
-        },
+	ticks: {
+	  color: "#FFFFFF",
+	  callback: function (value: any) {
+	    const date = new Date(value)
+	    if (date.getHours() !== 0 || date.getMinutes() !== 0) {
+	      return ""
+	    }
+	    return `${date.getMonth() + 1}/${date.getDate()}`
+	  },
+	},
         grid: { color: "#444444" },
       },
       y: {
