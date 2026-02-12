@@ -59,6 +59,8 @@ export const ChartFace = (props: { intervals: Interval[] }) => {
         },
 	ticks: {
 	  color: "#FFFFFF",
+	  autoSkip: false,
+	  maxRotation: 0,
 	  callback: function (value: any) {
 	    const date = new Date(value)
 	    if (date.getHours() !== 0 || date.getMinutes() !== 0) {
@@ -92,11 +94,7 @@ export const ChartFace = (props: { intervals: Interval[] }) => {
       },
       legend: { display: false },
       tooltip: {
-        titleColor: "#FFFFFF",
-        bodyColor: "#FFFFFF",
-        backgroundColor: "#222222",
-        borderColor: "#444444",
-        borderWidth: 1,
+	enabled: false,
       },
     },
   }
